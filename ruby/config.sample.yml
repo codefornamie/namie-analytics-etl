@@ -1,0 +1,10 @@
+mysql:
+    host: localhost
+    user: testuser
+    password: testpassword
+    database: testdatabase
+aws:
+    region: ap-northeast=1
+    s3:
+        bucket: testbucket
+        path: path/to/key

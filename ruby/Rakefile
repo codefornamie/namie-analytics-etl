@@ -1,0 +1,62 @@
+require 'aws-sdk'
+require 'kconv'
+require 'csv'
+require 'yaml'
+require 'mysql2'
+
+app_config = YAML.load_file("config.yml")
+
+desc "S3からcsvファイルをダウンロードし、文字コードをUTF8, 改行コードをLFにする"
+task :download_csv do
+  target_date = ENV['date'] || (DateTime.now).strftime('%Y%m%d')
+  csv_file = "devicelist_#{target_date}.csv"
+  File.open(csv_file, "w") do |file|
+    s3 = Aws::S3::Client.new(region: app_config['aws']['region'])
+    s3.get_object(bucket: app_config['aws']['s3']['bucket'], key: "#{app_config['aws']['s3']['path']}#{csv_file}") do |chunk|
+      include Kconv
+      file.write(chunk.toutf8.encode(:universal_newline => true))
+    end
+  end
+end
+
+desc "csvファイルの中身をMySQLにロードする"
+task :insert_mysql do
+  target_date = ENV['date'] || (DateTime.now).strftime('%Y%m%d')
+
+  csv_file = "devicelist_#{target_date}.csv"
+  target_date_slash = target_date.gsub(/(\d{4})(\d{2})(\d{2})/, "\\1/\\2/\\3")
+
+  mysql = Mysql2::Client.new(host: app_config['mysql']['host'],
+                             username: app_config['mysql']['user'],
+                             password: app_config['mysql']['password'],
+                             database: app_config['mysql']['database'])
+  csv = CSV.read(csv_file, {headers:true})
+  csv.each do |row|
+    sql = <<-"EOF"
+    INSERT INTO mdm_logs (
+      extracted_date,
+      tel_number,
+      user_name,
+      device_updated_at,
+      model_name,
+      os_version,
+      created_at,
+      updated_at
+    ) VALUES (
+      '#{target_date_slash}',
+      '#{row["電話番号"]}',
+      '#{row["氏名"]}',
+      '#{row["デバイス情報の収集日時"]}',
+      '#{row["モデル名"]}',
+      '#{row["Android OSバージョン"]}',
+      NOW(),
+      NOW()
+    ) ON DUPLICATE KEY UPDATE
+      extracted_date = '#{target_date_slash}',
+      user_name = '#{row["氏名"]}',
+      updated_at = NOW()
+    EOF
+    mysql.query(sql)
+  end
+end
+
