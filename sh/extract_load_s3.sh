@@ -5,7 +5,8 @@
 # このスクリプトは冪等になっている
 
 #設定ファイル読み込み
-. ./config.conf
+SCRIPT_DIR=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
+. ${SCRIPT_DIR}/config.conf
 
 #引数から日付文字列をとってくる。引数が無ければ1日前を指定
 TARGET_DATE=$1
@@ -15,20 +16,20 @@ fi
 echo $TARGET_DATE
 
 #s3データをsyncしてくるディレクトリを作成
-mkdir -p ../../s3_raw/namie-logs/fluentd_logs/nginx.access/$TARGET_DATE/
+mkdir -p ${BASE_DIR}../../s3_raw/namie-logs/fluentd_logs/nginx.access/$TARGET_DATE/
 
 #パース先のディレクトリを作成
-mkdir -p ../../s3_parsed/namie-logs/fluentd_logs/nginx.access/$TARGET_DATE/
+mkdir -p ${BASE_DIR}../../s3_parsed/namie-logs/fluentd_logs/nginx.access/$TARGET_DATE/
 
 #S3からローカルにデータをsync
-aws s3 sync s3://namie-logs/fluentd_logs/nginx.access/$TARGET_DATE/ ../../s3_raw/namie-logs/fluentd_logs/nginx.access/$TARGET_DATE/
+aws s3 sync s3://namie-logs/fluentd_logs/nginx.access/$TARGET_DATE/ ${BASE_DIR}../../s3_raw/namie-logs/fluentd_logs/nginx.access/$TARGET_DATE/
 echo "download from s3"
 
 #ローカルのディレクトリから解凍するディレクトリにファイルをコピー
-rsync -avz ../../s3_raw/namie-logs/fluentd_logs/nginx.access/$TARGET_DATE/ ../../s3_parsed/namie-logs/fluentd_logs/nginx.access/$TARGET_DATE/
+rsync -avz ../../s3_raw/namie-logs/fluentd_logs/nginx.access/$TARGET_DATE/ ${BASE_DIR}../../s3_parsed/namie-logs/fluentd_logs/nginx.access/$TARGET_DATE/
 
 #ディレクトリを移動
-pushd ../../s3_parsed/namie-logs/fluentd_logs/nginx.access/$TARGET_DATE/
+pushd ${BASE_DIR}../../s3_parsed/namie-logs/fluentd_logs/nginx.access/$TARGET_DATE/
 
 #解答ディレクトリ先でファイルを解凍
 find . -name '*.gz' | xargs gunzip
