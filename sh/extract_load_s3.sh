@@ -26,7 +26,7 @@ aws s3 sync s3://namie-logs/fluentd_logs/nginx.access/$TARGET_DATE/ ${BASE_DIR}.
 echo "download from s3"
 
 #ローカルのディレクトリから解凍するディレクトリにファイルをコピー
-rsync -avz ../../s3_raw/namie-logs/fluentd_logs/nginx.access/$TARGET_DATE/ ${BASE_DIR}../../s3_parsed/namie-logs/fluentd_logs/nginx.access/$TARGET_DATE/
+rsync -avz ${BASE_DIR}../../s3_raw/namie-logs/fluentd_logs/nginx.access/$TARGET_DATE/ ${BASE_DIR}../../s3_parsed/namie-logs/fluentd_logs/nginx.access/$TARGET_DATE/
 
 #ディレクトリを移動
 pushd ${BASE_DIR}../../s3_parsed/namie-logs/fluentd_logs/nginx.access/$TARGET_DATE/
