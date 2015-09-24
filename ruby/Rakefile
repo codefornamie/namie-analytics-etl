@@ -3,6 +3,8 @@ require 'kconv'
 require 'csv'
 require 'yaml'
 require 'mysql2'
+require 'date'
+require './lib/daily_kpi.rb'
 
 app_config = YAML.load_file("config.yml")
 
@@ -60,3 +62,13 @@ task :insert_mysql do
   end
 end
 
+desc "指定日のアクティブな端末数をカウントしてMySQLに入れる"
+task :update_active_summary do
+  target_date = ENV['date'] || (DateTime.now).strftime('%Y%m%d')
+  DailyKpi::ActiveSummary.update(target_date)
+end
+
+desc "デイリーのメール送信"
+task :daily_kpi_mail do
+  DailyKpi::Mail.sendMail.deliver_now
+end

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <div><img src='http://www.namie-tablet.org/wp-content/uploads/2015/07/android-chrome-192x192.png' /></div>
+    <h1>Code for Namie DailyKPI進捗</h1>
+    <h3>おはようございます。</h3>
+    <h3>浪江町タブレット事業の運営に関するレポートをデイリーでお送りします。</h3>
+    <h3>このメールの内容や送信先に関する連絡は<%= @admin_name %>（<%= @admin_mail %>）まで。</h3>
+  <h2>タブレット利用率</h2>
+  <% @active_summary.each do |as| %>
+  <h4><%= as['target_date'] %>:</h4>
+  <ul>
+    <li>
+    <%= (as['day30_active'] / as['all_count'].to_f * 100).round(2) %>%(30日間)
+    </li>
+    <li>
+    <%= (as['day14_active'] / as['all_count'].to_f * 100).round(2) %>%(14日間)
+    </li>
+    <li>
+    <%= (as['day7_active'] / as['all_count'].to_f * 100).round(2) %>%(7日間)
+    </li>
+    <li>
+    <%= (as['day3_active'] / as['all_count'].to_f * 100).round(2) %>%(3日間)
+    </li>
+    <li>
+    <%= (as['day1_active'] / as['all_count'].to_f * 100).round(2) %>%(1日間)
+    </li>
+  </ul>
+  <% end %>
+  </body>
+</html>
