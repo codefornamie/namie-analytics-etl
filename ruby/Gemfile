@@ -5,3 +5,10 @@ gem 'aws-sdk'
 gem 'json'
 gem 'mysql2'
 gem 'actionmailer'
+
+gem 'activesupport'
+gem 'railties'
+
+gem 'oauth2'
+gem 'google-api-client'
+gem 'legato'

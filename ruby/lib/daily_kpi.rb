@@ -27,6 +27,9 @@ module DailyKpi
       @admin_name = @@app_config['daily_kpi']['mail']['admin_name']
       @admin_mail = @@app_config['daily_kpi']['mail']['admin_mail']
 
+      gal = GoogleAnalyticsLegato.new
+      @one_day_article_ranking = gal.one_day_article_ranking
+
       mail(from: @@app_config['daily_kpi']['mail']['from'],
           to: @@app_config['daily_kpi']['mail']['send_to'],
           subject: "【Code for Namie】デイリーKPI進捗(#{(DateTime.now).strftime('%Y/%m/%d')})") do |format|

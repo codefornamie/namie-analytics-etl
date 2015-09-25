@@ -8,11 +8,21 @@ aws:
     s3:
         bucket: testbucket
         path: path/to/key
-mail:
-    admin_name: hoge
-    admin_mail: hoge@example.com
-    from:
-        - hoge@example.com
-    send_to:
-        - foo@example.com
-        - bar@example.com
+
+daily_kpi:
+    mail:
+        admin_name: hoge
+        admin_mail: hoge@example.com
+        from:
+            - hoge@example.com
+        send_to:
+            - foo@example.com
+            - bar@example.com
+
+google_analytics:
+    api_client:
+        app_name: namie-analytics
+        app_version: 0.0.1
+        key_path: /path/to/key.p12
+        key_secret: notasecret
+        service_account_email: SOME_STRING.gserviceaccount.com

@@ -9,6 +9,14 @@
     <h3>おはようございます。</h3>
     <h3>浪江町タブレット事業の運営に関するレポートをデイリーでお送りします。</h3>
     <h3>このメールの内容や送信先に関する連絡は<%= @admin_name %>（<%= @admin_mail %>）まで。</h3>
+  <h2>昨日の記事別アクセスランキング</h2>
+  <% @one_day_article_ranking.each do |article| %>
+  <ul>
+    <li>
+    <%= article.eventLabel %> (<%= article.totalevents %>)
+    </li>
+  </ul>
+  <% end %>
   <h2>タブレット利用率</h2>
   <% @active_summary.each do |as| %>
   <h4><%= as['target_date'] %>:</h4>
@@ -30,5 +38,6 @@
     </li>
   </ul>
   <% end %>
+
   </body>
 </html>

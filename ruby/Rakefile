@@ -5,6 +5,7 @@ require 'yaml'
 require 'mysql2'
 require 'date'
 require './lib/daily_kpi.rb'
+require './lib/google_analytics_legato.rb'
 
 app_config = YAML.load_file("config.yml")
 
