@@ -21,7 +21,7 @@ module DailyKpi
         SELECT target_date, all_count, day30_active, day14_active, day7_active, day3_active, day1_active
         FROM mdm_active_summary
         ORDER BY target_date DESC
-        LIMIT 10
+        LIMIT 7
       EOF
       @active_summary = mysql.query(sql)
       @admin_name = @@app_config['daily_kpi']['mail']['admin_name']

@@ -18,26 +18,29 @@
   </ul>
   <% end %>
   <h2>タブレット利用率</h2>
-  <% @active_summary.each do |as| %>
-  <h4><%= as['target_date'] %>:</h4>
-  <ul>
-    <li>
-    <%= (as['day30_active'] / as['all_count'].to_f * 100).round(2) %>%(30日間)
-    </li>
-    <li>
-    <%= (as['day14_active'] / as['all_count'].to_f * 100).round(2) %>%(14日間)
-    </li>
-    <li>
-    <%= (as['day7_active'] / as['all_count'].to_f * 100).round(2) %>%(7日間)
-    </li>
-    <li>
-    <%= (as['day3_active'] / as['all_count'].to_f * 100).round(2) %>%(3日間)
-    </li>
-    <li>
-    <%= (as['day1_active'] / as['all_count'].to_f * 100).round(2) %>%(1日間)
-    </li>
-  </ul>
-  <% end %>
-
+  <table>
+    <thead>
+      <tr>
+        <th>日付</th>
+        <th>30日間</th>
+        <th>14日間</th>
+        <th>7日間</th>
+        <th>3日間</th>
+        <th>1日間</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @active_summary.each do |as| %>
+    <tr>
+      <td><%= as['target_date'] %></td>
+      <td><%= (as['day30_active'] / as['all_count'].to_f * 100).round(2) %></td>
+      <td><%= (as['day14_active'] / as['all_count'].to_f * 100).round(2) %></td>
+      <td><%= (as['day7_active'] / as['all_count'].to_f * 100).round(2) %></td>
+      <td><%= (as['day3_active'] / as['all_count'].to_f * 100).round(2) %></td>
+      <td><%= (as['day1_active'] / as['all_count'].to_f * 100).round(2) %></td>
+    </tr>
+    <% end %>
+    </tbody>
+  </table>
   </body>
 </html>
