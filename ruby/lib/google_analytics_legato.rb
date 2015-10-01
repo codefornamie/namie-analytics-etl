@@ -25,7 +25,7 @@ class GoogleAnalyticsLegato
 
   def one_day_article_ranking
     profile = @user.profiles.first
-    options = {start_date: 1.days.ago, end_date: Time.now, sort: "-pageviews", limit: 10}
+    options = {start_date: 1.days.ago, end_date: Time.now, sort: "-totalevents", limit: 10}
     EventPageviewModel.exclude_category_not_set.match_action_article_reference.exclude_label_undefined.results(profile, options)
   end
 
